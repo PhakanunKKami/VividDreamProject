@@ -6,7 +6,7 @@ public class Player {
 
     public int itemselected;
 
-    //item in inventory
+    //item in inventory 1
     public int hasWD; //white daruma
     public int hasSK; //silver key
     public int hasET; //electricle tape
@@ -14,6 +14,15 @@ public class Player {
     public int hasWC; //white candle
     public int hasGL; //grey lighter
 
+    //item in inventory 2
+    public int hasRD; //red daruma
+    public int hasBD; //blue daruma
+    public int hasSC; //scissors
+    public int hasCB; //crowbar
+    public int hasMN; //missing note
+    public int hasCD; //CD
+
+    //others
     public int placepaper; //paper place or not
     public int candlelight; // candle light or not
 
@@ -24,6 +33,10 @@ public class Player {
 
     public int usebox; //check if use
     public int usedrawer; //check if use
+
+    public int room1pass; //check if pass room 1
+
+    public int count1;
     
     public Player(GameManager gm){
         this.gm = gm;
@@ -33,14 +46,22 @@ public class Player {
         // 0 = dont have 1 = have
         //item selected
         itemselected=0;
-        //itembar
+        //itembar 1
         hasWD = 0;
         hasSK = 0;
         hasET = 0;
         hasMP = 0;
         hasWC = 0;
         hasGL = 0;
+        //itembar 2
+        hasRD = 0;
+        hasBD = 0;
+        hasSC = 0;
+        hasCB = 0;
+        hasMN = 0;
+        hasCD = 0; 
 
+        //other
         placepaper = 0;
         candlelight = 0;
 
@@ -51,6 +72,9 @@ public class Player {
 
         usebox = 0;
         usedrawer = 0;
+
+        room1pass =0;
+        count1 = 0;
 
         //time
         gm.ui.countdownValue = 300;
@@ -127,6 +151,54 @@ public class Player {
         }
         if(hasGL==1){
             gm.ui.GreyLighterInv.setVisible(true);
+        }
+
+        //check rd
+        if(hasRD==0){
+            gm.ui.RedDarumaInv.setVisible(false);
+        }
+        if(hasRD==1){
+            gm.ui.RedDarumaInv.setVisible(true);
+        }
+
+        //check bd
+        if(hasBD==0){
+            gm.ui.BlueDarumaInv.setVisible(false);
+        }
+        if(hasBD==1){
+            gm.ui.BlueDarumaInv.setVisible(true);
+        }
+
+        //check sc
+        if(hasSC==0){
+            gm.ui.ScissorsInv.setVisible(false);
+        }
+        if(hasSC==1){
+            gm.ui.ScissorsInv.setVisible(true);
+        }
+
+        //check cb
+        if(hasCB==0){
+            gm.ui.CrowBarInv.setVisible(false);
+        }
+        if(hasCB==1){
+            gm.ui.CrowBarInv.setVisible(true);
+        }
+
+        //check mn
+        if(hasMN==0){
+            gm.ui.MissingNoteInv.setVisible(false);
+        }
+        if(hasMN==1){
+            gm.ui.MissingNoteInv.setVisible(true);
+        }
+
+        //check cd
+        if(hasCD==0){
+            gm.ui.CDInv.setVisible(false);
+        }
+        if(hasCD==1){
+            gm.ui.CDInv.setVisible(true);
         }
     }
 }

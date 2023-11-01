@@ -38,6 +38,9 @@ public class UI {
     JLabel inventoryLabel;
     //room1 items
     public JLabel WhiteDarumaInv,SilverKeyInv,ElectricalTapeInv,MysteryPaperInv,WhiteCandleInv,GreyLighterInv;
+    //room2 items
+    public JLabel RedDarumaInv,BlueDarumaInv,ScissorsInv,CrowBarInv,MissingNoteInv,CDInv;
+
     public JLabel Highlight;
 
     public UI(GameManager gm, ActionHandler aHandler){
@@ -427,6 +430,26 @@ public class UI {
       GreyLighterInv = new JLabel();
       addItemToInventory(GreyLighterInv, 480, 12, 72, 80, "Resources/ItemBar/LighterItemBar.png", "GL");
 
+      //item room2
+      RedDarumaInv = new JLabel();
+      addItemToInventory(RedDarumaInv, 20, 12, 72, 80, "Resources/ItemBar/RedDarumaItemBar.png", "WD");
+
+      BlueDarumaInv = new JLabel();
+      addItemToInventory(BlueDarumaInv, 112, 12, 72, 80, "Resources/ItemBar/BlueDarumaItemBar.png", "SK");
+
+      ScissorsInv = new JLabel();
+      addItemToInventory(ScissorsInv, 204, 12, 72, 80, "Resources/ItemBar/ScissorsItemBar.png","ET");
+
+      CrowBarInv = new JLabel();
+      addItemToInventory(CrowBarInv, 296, 12, 72, 80, "Resources/ItemBar/CrowbarItemBar.png", "MP");
+
+      MissingNoteInv = new JLabel();
+      addItemToInventory(MissingNoteInv, 388, 12, 72, 80, "Resources/ItemBar/MissingNoteItemBar.png", "WC");
+
+      CDInv = new JLabel();
+      addItemToInventory(CDInv, 480, 12, 72, 80, "Resources/ItemBar/CDItemBar.png", "GL");
+
+
       //itemhighlight
       Highlight = new JLabel();
       addItemToInventory(Highlight, 20, 12, 72, 80, "Resources/Gui/SelectedItem.png");
@@ -530,6 +553,9 @@ public class UI {
       createArrowButton(4, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-3");
       createArrowButton(4, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-1");
       bgPanel[4].add(bgLabel[4]);
+
+      //Break1
+      createBackground(5, "Resources/Room2/BlackBG.png");
 
     }
 

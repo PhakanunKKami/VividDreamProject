@@ -33,10 +33,31 @@ public class Event01 {
 
     //room1-1
     public void door1open(){
-        String[] Text = {
-            "It open",
+        if(gm.player.hasRD==1 && gm.player.hasBD ==1){
+            //go next room
+            String[] Text = {
+            "Let's go",
         };
         setDialogue(Text,"Carey");
+        }
+        else{
+            if(gm.player.count1==0){
+            String[] Text = {
+                "Take the Daruma with you...",
+                "You need them"
+            };
+            setDialogue(Text,"Mysterious voice");
+        }
+        if(gm.player.count1==1){
+            String[] Text = {
+            "I should go look at the daruma \non the shelf",
+        };
+        setDialogue(Text,"Carey");
+        }
+        }
+        
+        
+        
     }
 
     public void lookDoor1(){
@@ -132,11 +153,19 @@ public class Event01 {
     }
 
     public void darumas(){
-        String[] Text = {
+        if(gm.player.room1pass==1){
+            String[] Text = {
+            "It looks like the glue \nhas come off",
+        };
+        setDialogue(Text,"Carey");
+        }
+        else{
+            String[] Text = {
             "Interesting looking Daruma",
             "It's glued to the shelf",
         };
         setDialogue(Text,"Carey");
+        }
 
     }
 
@@ -196,7 +225,7 @@ public class Event01 {
             String[] Text = {
             "The computer is locked",
             "If I enter the wrong password \n3 times",
-            "The computer won't let me enter any password again",
+            "The computer won't let me enter \nany password again",
             "I should look for more hints"
         };
         setDialogue(Text,"Carey");
@@ -416,7 +445,8 @@ public class Event01 {
         if(input.equalsIgnoreCase(Integer.toString(gm.ui.getCorrectCode()))){
             System.out.println("PASS");
             gm.ui.bgPanel[1].getComponent(0).setVisible(true);
-            gm.ui.randomCorrectCode();
+            gm.player.room1pass = 1;
+
         }
     }
 
@@ -491,12 +521,23 @@ public class Event01 {
                     gm.player.updatePlayerStatus();
                 }
 
+                if (currentText[currentTextIndex - 1].equals("It looks like the glue \nhas come off")) {
+                    gm.ui.bgPanel[2].getComponent(4).setVisible(false);
+                    gm.player.hasRD=1;
+                    gm.player.hasBD=1;
+                    gm.player.updatePlayerStatus();
+                }
+
                 //extra after dialogue
                 if (currentText[currentTextIndex - 1].equals("..wake.....up")) {
                     radio11();
                 }
 
-                if(currentText[currentTextIndex - 1].equals("It open")){
+                if (currentText[currentTextIndex - 1].equals("You need them")) {
+                    gm.player.count1=1;
+                }
+
+                if(currentText[currentTextIndex - 1].equals("Let's go")){
                     gm.ui.countdownTimer.stop();
                     //go to chapter 2
                 }
