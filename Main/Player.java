@@ -26,17 +26,23 @@ public class Player {
     public int placepaper; //paper place or not
     public int candlelight; // candle light or not
 
-    public int knowpass1; // know com password or not
-    public int knowpass2; // know safe password or not
+    public int knowpass; // know password or not
 
     public int wrongpass; // count wrong pass
+    public int codeinput; // count code input
 
     public int usebox; //check if use
     public int usedrawer; //check if use
 
     public int room1pass; //check if pass room 1
+    public int room2pass; //check if pass room 2
 
-    public int count1;
+    public int count1; //for additional dialogue
+
+    public int atroom; //check what room player at
+
+    public int playtime=0; //check if play first time or not
+    
     
     public Player(GameManager gm){
         this.gm = gm;
@@ -44,6 +50,8 @@ public class Player {
 
     public void setPlayerDefaultStatus(){
         // 0 = dont have 1 = have
+
+        atroom=1;
         //item selected
         itemselected=0;
         //itembar 1
@@ -65,21 +73,24 @@ public class Player {
         placepaper = 0;
         candlelight = 0;
 
-        knowpass1 = 0;
-        knowpass2 = 0;
+        knowpass = 0;
 
         wrongpass = 0;
+        codeinput =0;
 
         usebox = 0;
         usedrawer = 0;
 
-        room1pass =0;
+        room1pass = 0;
         count1 = 0;
+        
+
+        room2pass = 0;
 
         //time
         gm.ui.countdownValue = 300;
 
-        gm.ui.bgPanel[1].getComponent(0).setVisible(false);
+        gm.ui.bgPanel[1].getComponent(0).setVisible(false);//opened door1
         gm.ui.bgPanel[2].getComponent(0).setVisible(true);//daruma
         gm.ui.bgPanel[2].getComponent(1).setVisible(true);//box close
         gm.ui.bgPanel[3].getComponent(1).setVisible(false);//wire
@@ -92,6 +103,16 @@ public class Player {
         gm.ui.bgPanel[4].getComponent(4).setVisible(false);//code
         gm.ui.bgPanel[4].getComponent(5).setVisible(false);//paper
         gm.ui.bgPanel[4].getComponent(6).setVisible(false);//code hanging paper
+
+        gm.ui.bgPanel[5].getComponent(0).setVisible(false);//ready button
+
+        gm.ui.bgPanel[6].getComponent(0).setVisible(false);//opened door2
+        gm.ui.bgPanel[7].getComponent(0).setVisible(false);//crowbar
+        gm.ui.bgPanel[7].getComponent(1).setVisible(false);//doll3
+        gm.ui.bgPanel[8].getComponent(0).setVisible(false);//fixed notebook
+        gm.ui.bgPanel[9].getComponent(0).setVisible(false);//scissors
+        gm.ui.bgPanel[9].getComponent(1).setVisible(false);//doll2
+        gm.ui.bgPanel[9].getComponent(2).setVisible(false);//record player with cd
 
         updatePlayerStatus();
     }

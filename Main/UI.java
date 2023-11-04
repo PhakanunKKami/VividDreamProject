@@ -18,12 +18,13 @@ public class UI {
     public JTextArea nameText;
     public PlaceholderTextField inputField;
     public PlaceholderTextField inputField1;
+    public PlaceholderTextField inputField2;
     public JLabel dialogueLabel;
     public JLabel nextLabel;
     public JLabel portraitLabel;
     public JLabel itembarLabel;
-    public JPanel bgPanel[] = new JPanel[10];
-    public JLabel bgLabel[] = new JLabel[10];
+    public JPanel bgPanel[] = new JPanel[15];
+    public JLabel bgLabel[] = new JLabel[15];
     private JLabel countdownLabel;
     public int countdownValue;
     public Timer countdownTimer;
@@ -118,12 +119,19 @@ public class UI {
       playButton.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
               titlePanel.setVisible(false);
-              createMainField();
               createPlayerField();
+              createMainField();
               generateScene();
+              if(gm.player.playtime==0){
+                countdownTimer.stop();
+                inventoryPanel.setVisible(false);
+                gm.sChanger.showSceneStart();
+                gm.ev1.lookItem("start");
+              }
+              else{
+                gm.sChanger.showScene1();
+              }
               gm.player.setPlayerDefaultStatus();
-              gm.sChanger.showScene1();
-              
           }
       });
 
@@ -177,6 +185,41 @@ public class UI {
     lostPanel.add(lostLabel);
 
     window.add(lostPanel);
+}
+
+public void initializeWinScreen() {
+    JPanel winPanel = new JPanel();
+    winPanel.setBounds(100, 0, 680, 680);
+    winPanel.setBackground(null);
+    winPanel.setLayout(null);
+
+    JLabel winLabel = new JLabel();
+    winLabel.setBounds(0, 0, 680, 680);
+    ImageIcon winbg = new ImageIcon(getClass().getResource("Resources/Gui/LostBG.gif"));
+    winLabel.setIcon(winbg);
+
+    JButton backButton = new JButton();
+    backButton.setBounds(228, 420, 224, 96);
+    ImageIcon backIcon = new ImageIcon(getClass().getResource("Resources/Gui/BackButton.png"));
+    backButton.setIcon(backIcon);
+
+    backButton.setBackground(null);
+    backButton.setFocusPainted(false);
+    backButton.setBorderPainted(false);
+    backButton.setContentAreaFilled(false);
+
+    backButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            // Return to the main menu
+            initializeTitleScreen();
+            winPanel.setVisible(false);
+        }
+    });
+
+    winPanel.add(backButton);
+    winPanel.add(winLabel);
+
+    window.add(winPanel);
 }
 
 
@@ -253,7 +296,6 @@ public class UI {
         nameText.setFont(Pixel.deriveFont(Font.BOLD,30));
 
         //for codepad 1 & 2
-
         inputField = new PlaceholderTextField("ENTER CODE");
         inputField.setBounds(290, 300, 300, 80);
         inputField.setForeground(Color.WHITE);
@@ -262,13 +304,20 @@ public class UI {
         inputField.setHorizontalAlignment(JTextField.CENTER); 
 
         //for computer
-
         inputField1 = new PlaceholderTextField("ENTER PASSWORD");
         inputField1.setBounds(240, 300, 400, 80);
         inputField1.setForeground(Color.BLACK);
         inputField1.setBackground(Color.WHITE);
         inputField1.setFont(Pixel.deriveFont(Font.BOLD,60));
-        inputField1.setHorizontalAlignment(JTextField.CENTER); 
+        inputField1.setHorizontalAlignment(JTextField.CENTER);
+
+        //for safe
+        inputField2 = new PlaceholderTextField("ENTER PASSWORD");
+        inputField2.setBounds(240, 300, 400, 80);
+        inputField2.setForeground(Color.WHITE);
+        inputField2.setBackground(Color.BLACK);
+        inputField2.setFont(Pixel.deriveFont(Font.BOLD,60));
+        inputField2.setHorizontalAlignment(JTextField.CENTER); 
 
         messageText.setOpaque(false);
         nameText.setOpaque(false);
@@ -276,6 +325,7 @@ public class UI {
         window.add(portraitLabel);
         window.add(inputField);
         window.add(inputField1);
+        window.add(inputField2);
         window.add(nextLabel);
         window.add(messageText);
         window.add(nameText);
@@ -289,7 +339,8 @@ public class UI {
         nextLabel.setVisible(false);
         portraitLabel.setVisible(false);
         inputField.setVisible(false);
-        inputField1.setVisible(false); 
+        inputField1.setVisible(false);
+        inputField2.setVisible(false); 
     }
 
     public void createBackground(int bgNum, String bgfilename){
@@ -344,20 +395,20 @@ public class UI {
 
     }
 
-    public void createArrowButton(int bgNum, int x, int y, int width, int height, String arrowfilename, String command){
-      ImageIcon arrowIcon = new ImageIcon(getClass().getResource(arrowfilename));
+    public void createButton(int bgNum, int x, int y, int width, int height, String filename, String command){
+      ImageIcon buttonIcon = new ImageIcon(getClass().getResource(filename));
 
-      JButton arrowButton = new JButton();
-      arrowButton.setBounds(x,y,width,height);
-      arrowButton.setBackground(null);
-      arrowButton.setContentAreaFilled(false);
-      arrowButton.setFocusPainted(false);
-      arrowButton.setIcon(arrowIcon);
-      arrowButton.addActionListener(gm.aHandler);
-      arrowButton.setActionCommand(command);
-      arrowButton.setBorderPainted(false);
+      JButton Button = new JButton();
+      Button.setBounds(x,y,width,height);
+      Button.setBackground(null);
+      Button.setContentAreaFilled(false);
+      Button.setFocusPainted(false);
+      Button.setIcon(buttonIcon);
+      Button.addActionListener(gm.aHandler);
+      Button.setActionCommand(command);
+      Button.setBorderPainted(false);
 
-      bgPanel[bgNum].add(arrowButton);
+      bgPanel[bgNum].add(Button);
     }
 
     public void addItemToInventory(JLabel itemLabel, int x, int y, int width, int height, String itemFilename, String... actionCommand) {
@@ -432,22 +483,22 @@ public class UI {
 
       //item room2
       RedDarumaInv = new JLabel();
-      addItemToInventory(RedDarumaInv, 20, 12, 72, 80, "Resources/ItemBar/RedDarumaItemBar.png", "WD");
+      addItemToInventory(RedDarumaInv, 20, 12, 72, 80, "Resources/ItemBar/RedDarumaItemBar.png", "RD");
 
       BlueDarumaInv = new JLabel();
-      addItemToInventory(BlueDarumaInv, 112, 12, 72, 80, "Resources/ItemBar/BlueDarumaItemBar.png", "SK");
+      addItemToInventory(BlueDarumaInv, 112, 12, 72, 80, "Resources/ItemBar/BlueDarumaItemBar.png", "BD");
 
       ScissorsInv = new JLabel();
-      addItemToInventory(ScissorsInv, 204, 12, 72, 80, "Resources/ItemBar/ScissorsItemBar.png","ET");
+      addItemToInventory(ScissorsInv, 204, 12, 72, 80, "Resources/ItemBar/ScissorsItemBar.png","SC");
 
       CrowBarInv = new JLabel();
-      addItemToInventory(CrowBarInv, 296, 12, 72, 80, "Resources/ItemBar/CrowbarItemBar.png", "MP");
+      addItemToInventory(CrowBarInv, 296, 12, 72, 80, "Resources/ItemBar/CrowbarItemBar.png", "CB");
 
       MissingNoteInv = new JLabel();
-      addItemToInventory(MissingNoteInv, 388, 12, 72, 80, "Resources/ItemBar/MissingNoteItemBar.png", "WC");
+      addItemToInventory(MissingNoteInv, 388, 12, 72, 80, "Resources/ItemBar/MissingNoteItemBar.png", "MN");
 
       CDInv = new JLabel();
-      addItemToInventory(CDInv, 480, 12, 72, 80, "Resources/ItemBar/CDItemBar.png", "GL");
+      addItemToInventory(CDInv, 480, 12, 72, 80, "Resources/ItemBar/CDItemBar.png", "CD");
 
 
       //itemhighlight
@@ -497,8 +548,8 @@ public class UI {
       createObject(1,556, 340, 52, 76,"Resources/Room1/NumPad1.png","LookNumPad1");
       createObject(1,168, 254, 175, 340,"Resources/Room1/Lamp1.png","LookLamp");
       //arrow
-      createArrowButton(1, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-4");
-      createArrowButton(1, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-2");
+      createButton(1, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-4");
+      createButton(1, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-2");
       bgPanel[1].add(bgLabel[1]);
 
       //Room1-2
@@ -510,11 +561,11 @@ public class UI {
       createObject(2, 512, 552, 76, 32, "Resources/Room1/BoxOpen.png", "BoxOpen");
 
       createObject(2, 268, 396, 84, 76, "Resources/Room1/Radio.png", "LookRadio1");
-      createObject(2, 472, 380, 84, 36, "Resources/Room1/Darumas.png", "LookDarumas");
+      createObject(2, 472, 380, 84, 36, "Resources/Room1/Darumas.png", "LookDaruma");
       createObject(2, 584, 320, 32, 40, "Resources/Room1/SnowGlobe.png", "LookSnowGlobe");
       //arrow
-      createArrowButton(2, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-1");
-      createArrowButton(2, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-3");
+      createButton(2, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-1");
+      createButton(2, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-3");
       bgPanel[2].add(bgLabel[2]);
 
       //Room1-3
@@ -530,8 +581,8 @@ public class UI {
 
       createObject(3,324,436,228,40,"Resources/Room1/Drawer.png","Drawer");
       //arrow
-      createArrowButton(3, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-2");
-      createArrowButton(3, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-4");
+      createButton(3, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-2");
+      createButton(3, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-4");
       bgPanel[3].add(bgLabel[3]);
 
       //Room1-4
@@ -539,24 +590,100 @@ public class UI {
       //can pick up or need change visible
       createObject(4, 536, 388, 108, 120, "Resources/Room1/SilverKeyItem.png", "SilverKey");
       createObject(4, 536, 408, 96, 96, "Resources/Room1/WigglesInTheBox.png", "LookJITB");
-      createObject(4,188,300,72,120,"REsources/Room1/FireItem.png","LookCandleL");
-      createObject(4,188,328,72,92,"REsources/Room1/CandleItem.png","LookCandle");
-      createObject(4,172,188,84,120,"REsources/Room1/CodePaper.png","LookCodeP");
-      createObject(4,172,180,84,120,"REsources/Room1/PaperItem.png","LookPapers");
-      createObject(4,280,180,192,120,"REsources/Room1/CodeHangingPaper.png","LookHiddenP");
+      createObject(4,188,300,72,120,"Resources/Room1/FireItem.png","LookCandleL");
+      createObject(4,188,328,72,92,"Resources/Room1/CandleItem.png","LookCandle");
+      createObject(4,172,188,84,120,"Resources/Room1/CodePaper.png","LookCodeP");
+      createObject(4,172,180,84,120,"Resources/Room1/PaperItem.png","LookPapers");
+      createObject(4,280,180,192,120,"Resources/Room1/CodeHangingPaper.png","LookHiddenP");
 
       createObject(4,540,504,136,88,"Resources/Room1/WhiteBox.png","LookWBox");
-      createObject(4,280,180,192,120,"REsources/Room1/HangingPaper.png","LookPapers");
-      createObject(4,172,180,84,120,"REsources/Room1/NoPaperHere.png","LookNoPaper");
-      createObject(4,188,392,72,28,"REsources/Room1/CandleHolder.png","LookHolder");
+      createObject(4,280,180,192,120,"Resources/Room1/HangingPaper.png","LookPapers");
+      createObject(4,172,180,84,120,"Resources/Room1/NoPaperHere.png","LookNoPaper");
+      createObject(4,188,392,72,28,"Resources/Room1/CandleHolder.png","LookHolder");
       //arrow
-      createArrowButton(4, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-3");
-      createArrowButton(4, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-1");
+      createButton(4, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-3");
+      createButton(4, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-1");
       bgPanel[4].add(bgLabel[4]);
 
-      //Break1
+      //Break
       createBackground(5, "Resources/Room2/BlackBG.png");
+      //ready button
+      createButton(5, 292, 300, 312, 60, "Resources/Gui/ReadyButton.png", "Ready");
+      bgPanel[5].add(bgLabel[5]);
 
+      //Room2-1
+      createBackground(6, "Resources/Room2/Room2-1.png");
+      //can pick up or need change visible
+      createObject(6, 340, 196, 200, 400, "Resources/Room1/Door1Open.png", "LookOpenDoor2");
+      createObject(6, 144, 460, 148, 80, "Resources/Room2/VentCover.png", "Vent");
+      createObject(6, 204, 504, 36, 16, "Resources/Room2/MissingNoteItem.png", "MissingNote");
+
+      createObject(6,340, 196, 200, 400,"Resources/Room1/Door1.png","LookDoor2");
+      createObject(6,556, 340, 52, 76,"Resources/Room1/NumPad1.png","LookNumPad2");
+      //arrow
+      createButton(6, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-4");
+      createButton(6, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-2");
+      bgPanel[6].add(bgLabel[6]);
+
+      //Room2-2
+      createBackground(7, "Resources/Room2/Room2-2.png");
+      //can pick up or need change visible
+      createObject(7, 478, 408, 172, 96, "Resources/Room2/CrowbarItem.png", "Crowbar");
+      createObject(7, 516, 408, 96, 96, "Resources/Room2/WigglesInTheBox3.png", "LookJITB3");
+      createObject(7, 196, 416, 195, 176, "Resources/Room2/Safe.png", "Safe");
+      createObject(7, 252, 532, 84, 36, "Resources/Room2/CDItem.png", "LookCD");
+      createObject(7,520,504,136,88,"Resources/Room2/GiftBox.png","Gift");
+
+      createObject(7,520,504,136,88,"Resources/Room2/BlueBox.png","LookBBox");
+      createObject(7, 320, 200, 180, 128, "Resources/Room2/Symbol.png", "Symbol");
+      //arrow
+      createButton(7, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-1");
+      createButton(7, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-3");
+      bgPanel[7].add(bgLabel[7]);
+      
+      //Room2-3
+      createBackground(8, "Resources/Room2/Room2-3.png");
+      //can pick up or need change visible
+      createObject(8, 384, 340, 116, 80, "Resources/Room2/FixedNoteBook.png", "FixedNotebook");
+
+      createObject(8, 384, 340, 116, 80, "Resources/Room2/NoteBook.png", "Notebook");
+      //arrow
+      
+      createButton(8, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-2");
+      createButton(8, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-4");
+      bgPanel[8].add(bgLabel[8]);
+      
+      //Room2-4
+      createBackground(9, "Resources/Room2/Room2-4.png");
+      //can pick up or need change visible
+      createObject(9, 216, 384, 132, 120, "Resources/Room2/ScissorsItem.png", "Scissors");
+      createObject(9, 216, 408, 96, 96, "Resources/Room2/WigglesInTheBox2.png", "LookJITB2");
+      createObject(9, 500, 448, 96, 24, "Resources/Room2/CDRecordPlayer.png", "trueCDPlayer");
+      
+      createObject(9,220,504,136,88,"Resources/Room2/RedBox.png","LookRBox");
+      createObject(9, 500, 448, 96, 24, "Resources/Room2/RecordPlayer.png", "CDPlayer");
+      createObject(9, 622,488, 64, 104, "Resources/Room2/Speaker.png", "Speaker");
+      createObject(9, 408,488, 64, 104, "Resources/Room2/Speaker.png", "Speaker");
+      //arrow
+      createButton(9, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-3");
+      createButton(9, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-1");
+      bgPanel[9].add(bgLabel[9]);
+
+      //Room2-3-extra
+      createBackground(10, "Resources/Room2/Room2-3.png");
+
+      //extra arrow for close hint
+      createButton(10, 422, 620, 36, 24, "Resources/Gui/DownArrow.png", "closeHint");
+
+      createObject(10, 248, 160, 380, 472, "Resources/Room2/Hint.png", "Hint");
+      bgPanel[10].add(bgLabel[10]);
+
+      //start game story
+      createBackground(11, "Resources/Room2/BlackBG.png");
+
+      //finish game
+      createBackground(12, "Resources/Room2/BlackBG.png");
+ 
     }
 
     

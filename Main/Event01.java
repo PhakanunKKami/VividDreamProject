@@ -13,7 +13,7 @@ public class Event01 {
         this.gm=gm;
     }
 
-     public void setDialogue(String[] text, String name) {
+    public void setDialogue(String[] text, String name) {
         String nm = name+" :";
         currentText = text;
         currentTextIndex = 0;
@@ -31,413 +31,329 @@ public class Event01 {
         gm.ui.nextLabel.setVisible(true);
     }
 
-    //room1-1
-    public void door1open(){
-        if(gm.player.hasRD==1 && gm.player.hasBD ==1){
-            //go next room
-            String[] Text = {
-            "Let's go",
-        };
-        setDialogue(Text,"Carey");
-        }
-        else{
-            if(gm.player.count1==0){
-            String[] Text = {
-                "Take the Daruma with you...",
-                "You need them"
-            };
-            setDialogue(Text,"Mysterious voice");
-        }
-        if(gm.player.count1==1){
-            String[] Text = {
-            "I should go look at the daruma \non the shelf",
-        };
-        setDialogue(Text,"Carey");
-        }
-        }
-        
-        
-        
-    }
-
-    public void lookDoor1(){
-        String[] Text = {
-            "Looks like it's locked.",
-            // Add additional text lines if needed
-        };
-        setDialogue(Text,"Carey");
-    }
-
-    public void Lamp(){
-        String[] Text = {
-            "Just a lamp.",
-            "Normal lamp.",
-        };
-        setDialogue(Text,"Carey");
-    }
-
-    public void lookNumPad1(){
-        String[] Text = {
-            "I need a code."
-        };
-        setDialogue(Text,"Carey");
-
-        //test
-        System.out.println(gm.ui.getCorrectCode());
+    //item click or story
+    public void lookItem(String itemName) {
+        String[] Text;
+        String name;
     
-        // Show the input field
-        gm.ui.inputField.setVisible(true);
-    }
-
-    //room 1-2
-
-    public void boxlock(){
-        if(gm.player.gm.player.itemselected==2){
-            System.out.println("Box unlock");
-            gm.player.hasSK=0;
-            gm.player.updatePlayerStatus();
-            gm.ui.bgPanel[2].getComponent(1).setVisible(false);
-        }
-        else{
-            String[] Text = {
-            "I need a key to open it",
-        };
-        setDialogue(Text,"Carey");
-        }
-    }
-
-    public void boxopen(){
-        if(gm.player.usebox==0){
-           String[] Text = {
-            "There's something in it",
-        };
-        setDialogue(Text,"Carey");
-        gm.player.usebox=1;
-        System.out.println("Silver Key and Paper to inventory"); 
-        }
-        else{
-            String[] Text = {
-            "This chest is empty",
-        };
-        setDialogue(Text,"Carey");
-        }
-        
-
-    }
-
-    public void pickupdaruma(){
-        String[] Text = {
-            "Looks like this one can be \npicked up",
-            "I'll keep it"
-        };
-        setDialogue(Text,"Carey");
-        
-        System.out.println("White Daruma to Inventory");
-    }
-
-    public void radio1(){
-        String[] Text = {
-            "I really miss you",
-            "It's been a long time since we \nlast talked",
-            "Please....",
-            "..wake.....up"
-        };
-        setDialogue(Text,"Sound from radio");
-    }
-
-    public void radio11(){
-        String[] Text = {
-            "The voice sounded very familiar",
-        };
-        setDialogue(Text,"Carey");
-    }
-
-    public void darumas(){
-        if(gm.player.room1pass==1){
-            String[] Text = {
-            "It looks like the glue \nhas come off",
-        };
-        setDialogue(Text,"Carey");
-        }
-        else{
-            String[] Text = {
-            "Interesting looking Daruma",
-            "It's glued to the shelf",
-        };
-        setDialogue(Text,"Carey");
-        }
-
-    }
-
-    public void snowglobe(){
-        String[] Text = {
-            "Ordinary snow globe",
-        };
-        setDialogue(Text,"Carey");
-
-    }
-
-    //room 1-3
-
-    public void fixwire(){
-        if(gm.player.itemselected==3){
-            gm.ui.bgPanel[3].getComponent(0).setVisible(false);
-            gm.ui.bgPanel[3].getComponent(1).setVisible(true);
-            gm.player.hasET=0;
-            gm.player.updatePlayerStatus();
-            gm.ui.bgPanel[3].getComponent(3).setVisible(true);
-        }
-        else{
-            String[] Text = {
-                "I need to find something to fix it",
-            };
-            setDialogue(Text,"Carey");
+        switch(itemName) {
+            case "start":
+                Text = new String[]{"Hello! Welcome to my game"};
+                name = "Mysterious voice";
+                break;
+            case "start2":
+                Text = new String[]{"Who are you? Where am I? \nGame?"};
+                name = "Carey";
+                break;
+            case "start3":
+                Text = new String[]{
+                    "I'm just a lonely kid who \nwants to play a game",
+                    "The rules are very simple:",
+                    "You have 5 minutes to get from \none room to the next",
+                    "Each room has a numpad \nDO NOT enter the wrong code \nmore than 5 times",
+                    "Got it?"
+                };
+                name = "Mysterious voice";
+                break;
+            case "start4":
+                Text = new String[]{"Um...Yes?"};
+                name = "Carey";
+                break;
+            case "start5":
+                Text = new String[]{"Great! Now let's start"};
+                name = "Mysterious voice";
+                break;
+            case "openeddoor":
+                if(gm.player.hasRD == 1 && gm.player.hasBD == 1) {
+                    Text = new String[]{"Let's go"};
+                    name = "Carey";
+                } else {
+                    Text = gm.player.count1 == 0 ?
+                            new String[]{"Take the Daruma with you...","You need them"} :
+                            new String[]{"I should go look at the daruma \non the shelf"};
+                    name = gm.player.count1 == 0 ? "Mysterious voice" : "Carey";
+                }
+                break;
+            case "door":
+                Text = new String[]{"Looks like it's locked"};
+                name = "Carey";
+                break;
+            case "lamp":
+                Text = new String[]{
+                    "Just a lamp",
+                    "Normal lamp"
+                };
+                name = "Carey";
+                break;
+            case "numpad":
+                Text = new String[]{"They said 'Don't enter the \nwrong code 5 times'"};
+                name = "Carey";
+                gm.ui.inputField.setVisible(true);
+                break;
+            case "lockchest":
+                if(gm.player.gm.player.itemselected == 2) {
+                    gm.player.hasSK = 0;
+                    gm.ui.Highlight.setVisible(false);
+                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.updatePlayerStatus();
+                    gm.ui.bgPanel[2].getComponent(1).setVisible(false);
+                    return;
+                } else {
+                    Text = new String[]{"I need a key to open it"};
+                    name = "Carey";
+                }
+                break;
+            case "openedchest":
+                if(gm.player.usebox == 0) {
+                    Text = new String[]{"There's something in it"};
+                    name = "Carey";
+                    gm.player.usebox = 1;
+                } else {
+                    Text = new String[]{"This chest is empty"};
+                    name = "Carey";
+                }
+                break;
+            case "whitedaruma":
+                Text = new String[]{
+                    "Looks like this one can be \npicked up",
+                    "I'll keep it"
+                };
+                name = "Carey";
+                break;
+            case "radio1":
+                Text = new String[]{
+                    "I really miss you",
+                    "It's been a long time \nsince we last talked",
+                    "Please....",
+                    "..wake.....up"
+                };
+                name = "Sound from radio";
+                break;
+            case "radio2":
+                Text = new String[]{"The voice sounded very familiar"};
+                name = "Carey";
+                break;
+            case "daruma":
+                if(gm.player.room1pass == 1) {
+                    Text = new String[]{"It looks like the glue has come off"};
+                    name = "Carey";
+                } else {
+                    Text = new String[]{
+                        "Interesting looking Daruma",
+                        "It's glued to the shelf"
+                    };
+                    name = "Carey";
+                }
+                break;
+            case "snowglobe":
+                Text = new String[]{"Ordinary snow globe"};
+                name = "Carey";
+                break;
+            case "brokenwire":
+                if(gm.player.itemselected==3){
+                    gm.ui.bgPanel[3].getComponent(0).setVisible(false);
+                    gm.ui.bgPanel[3].getComponent(1).setVisible(true);
+                    gm.player.hasET=0;
+                    gm.ui.Highlight.setVisible(false);
+                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.updatePlayerStatus();
+                    gm.ui.bgPanel[3].getComponent(3).setVisible(true);
+                    return;
+                } else {
+                    Text = new String[]{"I need to find something to fix it"};
+                    name = "Carey";
+                }
+                break;
+            case "wire":
+                Text = new String[]{"It works again"};
+                name = "Carey";
+                break;
+            case "comoff":
+                Text = new String[]{"This computer won't turn on"};
+                name = "Carey";
+                break;
+            case "comlock":
+                if (gm.player.knowpass == 1) {
+                    Text = new String[]{"I hope this work"};
+                    name = "Carey";
+                    gm.ui.inputField1.setVisible(true);
+                } else {
+                    Text = new String[]{
+                        "The computer is locked",
+                        "'Don't enter the wrong password \n3 times or it'll lock forever'",
+                        "I should look for more hints"
+                    };
+                    name = "Carey";
+                }
+                break;
+            case "comcode":
+                int doorcode = gm.ui.getCorrectCode();
+                Text = new String[]{
+                    "This is windows XP wallpaper",
+                    "There is a message that says",
+                    "'CODE "+doorcode+"'"
+                };
+                name = "Carey";
+                break;
+            case "drawer":
+                if(gm.player.usedrawer==0){
+                    Text = new String[]{
+                        "There's a candle and a lighter \nin here",
+                        "These things might come in \nhandy"
+                    };
+                    name = "Carey";
+                    gm.player.usedrawer=1;
+                } else {
+                    Text = new String[]{"This drawer is empty"};
+                    name = "Carey";
+                }
+                break;
+            case "silverkey":
+                Text = new String[]{"A key?"};
+                name = "Carey";
+                break;
+            case "wiggles":
+                Text = new String[]{"I'll call this doll 'Wiggles'"};
+                name = "Carey";
+                break;
+            case "whitebox":
+                if(gm.player.itemselected == 1){
+                    gm.ui.bgPanel[4].getComponent(0).setVisible(true);
+                    gm.ui.bgPanel[4].getComponent(1).setVisible(true);
+                    gm.player.hasWD = 0;
+                    gm.ui.Highlight.setVisible(false);
+                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.updatePlayerStatus();
+                    return;
+                } else {
+                    Text = new String[]{
+                        "A white box",
+                        "Same color as Daruma",
+                    };
+                    name = "Carey";
+                }
+            break;
+            case "papers":
+                Text = new String[]{"These papers are blank"};
+                name = "Carey";
+                break;
+            case "nopaper":
+                if(gm.player.itemselected == 4){
+                    gm.ui.bgPanel[4].getComponent(5).setVisible(true);
+                    gm.player.hasMP = 0;
+                    gm.ui.Highlight.setVisible(false);
+                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.placepaper = 1;
+                    gm.player.updatePlayerStatus();
+                    if(gm.player.candlelight == 1){
+                        gm.ui.bgPanel[4].getComponent(4).setVisible(true);
+                        gm.player.knowpass = 1;
+                    }
+                    return;
+                } else {
+                    Text = new String[]{"This one has no paper"};
+                    name = "Carey";
+                }
+                break;
+            case "holder":
+                if(gm.player.itemselected == 5){
+                    gm.ui.bgPanel[4].getComponent(3).setVisible(true);
+                    gm.player.hasWC = 0;
+                    gm.ui.Highlight.setVisible(false);
+                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.updatePlayerStatus();
+                    return;
+                } else {
+                    Text = new String[]{"Why is there a candle holder \nhere?"};
+                    name = "Carey";
+                }
+                break;
+            case "candle":
+                if(gm.player.itemselected == 6){
+                    gm.ui.bgPanel[4].getComponent(2).setVisible(true);
+                    gm.player.candlelight = 1;
+                    gm.player.hasGL = 0;
+                    gm.ui.Highlight.setVisible(false);
+                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.updatePlayerStatus();
+                    if(gm.player.placepaper == 1){
+                        gm.ui.bgPanel[4].getComponent(4).setVisible(true);
+                        gm.player.knowpass = 1;
+                    }
+                    gm.ui.bgPanel[4].getComponent(6).setVisible(true);
+                    return;
+                } else {
+                    Text = new String[]{"I should try lighting a candle"};
+                    name = "Carey";
+                }
+                break;
+            case "light":
+                Text = new String[]{"This candle has been lit"};
+                name = "Carey";
+                break;
+            case "password":
+                Text = new String[]{"'1001 0101 0110 0011'"};
+                name = "Carey";
+                break;
+            case "bcd":
+                Text = new String[]{"'BCD-8421' and a drawing \nthat looks like a computer"};
+                name = "Carey";
+                break;
+            case "breakroom1":
+                Text = new String[]{"It's dark"};
+                name = "Carey";
+                break;
+            case "breakroom2":
+                Text = new String[]{
+                    "You can rest first",
+                    "Tell me when you're ready"
+                };
+                name = "Mysterious Voice";
+                break;
+            case "breakroom3":
+                Text = new String[]{"I'm ready"};
+                name = "Carey";
+                gm.ui.bgPanel[5].getComponent(0).setVisible(false);
+                break;
+            default:
+                Text = new String[]{"No text here"};
+                name = "KKami";
+                break;
         }
     
-    }
-
-    public void wire(){
-        String[] Text = {
-            "It works again",
-        };
-        setDialogue(Text,"Carey");  
-    }
-
-    public void lookcom(){
-           String[] Text = {
-            "This computer won't turn on",
-        }; 
-        setDialogue(Text,"Carey");
-        
-    }
-
-    public void lockcom(){
-        if(gm.player.knowpass1==1){
-            String[] Text = {
-            "I hope this work",
-        };
-        setDialogue(Text,"Carey");
-
-        gm.ui.inputField1.setVisible(true);
-        }
-
-        else{
-            String[] Text = {
-            "The computer is locked",
-            "If I enter the wrong password \n3 times",
-            "The computer won't let me enter \nany password again",
-            "I should look for more hints"
-        };
-        setDialogue(Text,"Carey");
-        }
-        
-        
-    }
-
-    public void lookcode(){
-        int doorcode = gm.ui.getCorrectCode();
-        String[] Text = {
-            "This is windows XP wallpaper",
-            "There is a message that says",
-            "'CODE "+doorcode+"'"
-        };
-        setDialogue(Text,"Carey");
-    }
-
-    public void drawer(){
-        if(gm.player.usedrawer==0){
-           String[] Text = {
-            "There's a candle and a lighter \nin here",
-            "These things might come in \nhandy"
-        };
-        gm.player.usedrawer=1;
-        setDialogue(Text,"Carey");
-        }
-        else{
-            String[] Text = {
-            "This drawer is empty"
-        };
-        setDialogue(Text,"Carey");
-        }
-        
-        
-    }
-
-    //room 1-4
-
-    public void pickupsilverkey(){
-        String[] Text = {
-            "A key?",
-        };
-        setDialogue(Text,"Carey");
-        
-        System.out.println("White Daruma to Inventory");
-    }
-
-    public void lookjitb(){
-        String[] Text = {
-                "I'll call this doll 'Wiggles'"
-            };
-            setDialogue(Text,"Carey");
-    }
-
-    public void lookwbox(){
-        if(gm.player.itemselected==1){
-            gm.ui.bgPanel[4].getComponent(0).setVisible(true);
-            gm.ui.bgPanel[4].getComponent(1).setVisible(true);
-            gm.player.hasWD=0;
-            gm.player.updatePlayerStatus();
-        }
-        else{
-            String[] Text = {
-                "A white box",
-                "Same color as Daruma",
-            };
-            setDialogue(Text,"Carey");
-        }
-    }
-
-    public void lookpapers(){
-        String[] Text = {
-                "These papers are blank"
-            };
-            setDialogue(Text,"Carey");
-    }
-
-    public void looknopaper(){
-        if(gm.player.itemselected==4){
-            gm.ui.bgPanel[4].getComponent(5).setVisible(true);
-            gm.player.hasMP=0;
-            gm.player.placepaper=1;
-            gm.player.updatePlayerStatus();
-            if(gm.player.candlelight==1){
-                gm.ui.bgPanel[4].getComponent(4).setVisible(true);
-                gm.player.knowpass1 = 1;
-            }
-        }
-        else{
-            String[] Text = {
-                "This one has no paper"
-            };
-            setDialogue(Text,"Carey");
-        }
-    }
-
-    public void lookholder(){
-        if(gm.player.itemselected==5){
-            gm.ui.bgPanel[4].getComponent(3).setVisible(true);
-            gm.player.hasWC=0;
-            gm.player.updatePlayerStatus();
-        }
-        else{
-            String[] Text = {
-                "Why is there a candle holder \nhere?"
-            };
-            setDialogue(Text,"Carey");
-        }
-    }
-
-    public void lookcandle(){
-        if(gm.player.itemselected==6){
-            gm.ui.bgPanel[4].getComponent(2).setVisible(true);
-            gm.player.candlelight=1;
-            gm.player.hasGL=0;
-            gm.player.updatePlayerStatus();
-            if(gm.player.placepaper==1){
-                gm.ui.bgPanel[4].getComponent(4).setVisible(true);
-                gm.player.knowpass1 = 1;
-            }
-            gm.ui.bgPanel[4].getComponent(6).setVisible(true);
-        }
-        else{
-            String[] Text = {
-                "I should try lighting a candle"
-            };
-            setDialogue(Text,"Carey");
-        }
-    }
-
-    public void looklight(){
-        String[] Text = {
-                "This candle has been lit"
-            };
-            setDialogue(Text,"Carey");
-    }
-
-    public void lookpass(){
-        String[] Text = {
-                "'1001 0101 0110 0011'"
-            };
-            setDialogue(Text,"Carey");
-    }
-
-    public void lookbcd(){
-        String[] Text = {
-                "'BCD-8421' and a drawing \nthat looks like a computer",
-            };
-            setDialogue(Text,"Carey");
+        setDialogue(Text, name);
     }
 
     //itembar
-    public void wditembar(){
-        System.out.println("Item1 selected");
-        gm.player.itemselected=1;
-        gm.ui.itemnameLabel.setText("White Daruma");
+    public void handleItemSelection(int selectedItem) {
+        System.out.println("Item" + selectedItem + " selected");
+        gm.player.itemselected = selectedItem;
+        String itemName = getItemName(selectedItem);
+        gm.ui.itemnameLabel.setText(itemName);
         gm.ui.itemnameLabel.setVisible(true);
         gm.ui.Highlight.setVisible(true);
-        gm.ui.Highlight.setBounds(20, 12, 72, 80);
+        gm.ui.Highlight.setBounds(20 + (selectedItem - 1) * 92, 12, 72, 80);
     }
-
-    public void skitembar(){
-         System.out.println("Item2 selected");
-         gm.player.itemselected=2;
-         gm.ui.itemnameLabel.setText("Silver Key");
-        gm.ui.itemnameLabel.setVisible(true);
-         gm.ui.Highlight.setVisible(true);
-        gm.ui.Highlight.setBounds(112, 12, 72, 80);
-    }
-
-    public void etitembar(){
-        System.out.println("Item3 selected");
-        gm.player.itemselected=3;
-        gm.ui.itemnameLabel.setText("Electrical Tape");
-        gm.ui.itemnameLabel.setVisible(true);
-        gm.ui.Highlight.setVisible(true);
-        gm.ui.Highlight.setBounds(204, 12, 72, 80);
-
-    }
-
-    public void mpitembar(){
-         System.out.println("Item4 selected");
-         gm.player.itemselected=4;
-         gm.ui.itemnameLabel.setText("Mystery Paper");
-        gm.ui.itemnameLabel.setVisible(true);
-         gm.ui.Highlight.setVisible(true);
-        gm.ui.Highlight.setBounds(296, 12, 72, 80);
-
-    }
-
-    public void wcitembar(){
-         System.out.println("Item5 selected");
-         gm.player.itemselected=5;
-         gm.ui.itemnameLabel.setText("White Candle");
-        gm.ui.itemnameLabel.setVisible(true);
-         gm.ui.Highlight.setVisible(true);
-        gm.ui.Highlight.setBounds(388, 12, 72, 80);
- 
-    }
-
-    public void glitembar(){
-         System.out.println("Item6 selected");
-         gm.player.itemselected=6;
-         gm.ui.itemnameLabel.setText("Gray Lighter");
-        gm.ui.itemnameLabel.setVisible(true);
-         gm.ui.Highlight.setVisible(true);
-        gm.ui.Highlight.setBounds(480, 12, 72, 80);
-
-    }
-
     
+    private String getItemName(int selectedItem) {
+        switch (selectedItem) {
+            case 1:
+                return "White Daruma";
+            case 2:
+                return "Silver Key";
+            case 3:
+                return "Electrical Tape";
+            case 4:
+                return "Mystery Paper";
+            case 5:
+                return "White Candle";
+            case 6:
+                return "Gray Lighter";
+            default:
+                return "Unknown Item";
+        }
+    }
+
 
     //input code check
     public void handleInput(String input) {
@@ -446,10 +362,18 @@ public class Event01 {
             System.out.println("PASS");
             gm.ui.bgPanel[1].getComponent(0).setVisible(true);
             gm.player.room1pass = 1;
-
+        }
+        else{
+            gm.player.codeinput++;
+            if(gm.player.codeinput==5){
+                gm.ui.countdownTimer.stop();
+                gm.ui.clearScreen();
+                gm.ui.initializeLostScreen();
+            }
         }
     }
 
+    //input computer password check
     public void handlePass(String input) {
         System.out.println("Handling password: " + input);
         if(input.equalsIgnoreCase("9563")){
@@ -459,13 +383,14 @@ public class Event01 {
         else{
             gm.player.wrongpass++;
             if(gm.player.wrongpass==3){
+                gm.ui.countdownTimer.stop();
                 gm.ui.clearScreen();
                 gm.ui.initializeLostScreen();
             }
         }
     }
-    
 
+    //next click
     public void handleNext(){
 
         if(gm.ui.inputField.isVisible()){
@@ -495,7 +420,7 @@ public class Event01 {
                 dialogueOpen = false;
 
                 //After text condition
-
+                
                 //pick item up
                 if (currentText[currentTextIndex - 1].equals("I'll keep it")) {
                     gm.ui.bgPanel[2].getComponent(0).setVisible(false);
@@ -503,25 +428,25 @@ public class Event01 {
                     gm.player.updatePlayerStatus();
                 }
 
-                if (currentText[currentTextIndex - 1].equals("There's something in it")) {
+                else if (currentText[currentTextIndex - 1].equals("There's something in it")) {
                     gm.player.hasMP=1;
                     gm.player.hasET=1;
                     gm.player.updatePlayerStatus();
                 }
 
-                if (currentText[currentTextIndex - 1].equals("These things might come in \nhandy")) {
+                else if (currentText[currentTextIndex - 1].equals("These things might come in \nhandy")) {
                     gm.player.hasWC=1;
                     gm.player.hasGL=1;
                     gm.player.updatePlayerStatus();
                 }
 
-                if (currentText[currentTextIndex - 1].equals("A key?")) {
+                else if (currentText[currentTextIndex - 1].equals("A key?")) {
                     gm.ui.bgPanel[4].getComponent(0).setVisible(false);
                     gm.player.hasSK=1;
                     gm.player.updatePlayerStatus();
                 }
 
-                if (currentText[currentTextIndex - 1].equals("It looks like the glue \nhas come off")) {
+                else if (currentText[currentTextIndex - 1].equals("It looks like the glue has come off")) {
                     gm.ui.bgPanel[2].getComponent(4).setVisible(false);
                     gm.player.hasRD=1;
                     gm.player.hasBD=1;
@@ -529,17 +454,65 @@ public class Event01 {
                 }
 
                 //extra after dialogue
-                if (currentText[currentTextIndex - 1].equals("..wake.....up")) {
-                    radio11();
+                else if (currentText[currentTextIndex - 1].equals("Hello! Welcome to my game")) {
+                    lookItem("start2");
                 }
 
-                if (currentText[currentTextIndex - 1].equals("You need them")) {
+                else if (currentText[currentTextIndex - 1].equals("Who are you? Where am I? \nGame?")) {
+                    lookItem("start3");
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("Got it?")) {
+                    lookItem("start4");
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("Um...Yes?")) {
+                    lookItem("start5");
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("Great! Now let's start")) {
+                    gm.sChanger.showScene1();
+                    gm.ui.inventoryPanel.setVisible(true);
+                    gm.player.playtime=1;
+                    gm.ui.countdownTimer.start();
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("..wake.....up")) {
+                    lookItem("radio2");
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("You need them")) {
                     gm.player.count1=1;
                 }
 
-                if(currentText[currentTextIndex - 1].equals("Let's go")){
+                else if(currentText[currentTextIndex - 1].equals("Let's go")){
                     gm.ui.countdownTimer.stop();
-                    //go to chapter 2
+                    gm.sChanger.showScene5();
+                    gm.ui.inventoryPanel.setVisible(false);
+                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.ui.Highlight.setVisible((false));
+                    lookItem("breakroom1");
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("It's dark")) {
+                    lookItem("breakroom2");
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("Tell me when you're ready")) {
+                    gm.ui.bgPanel[5].getComponent(0).setVisible(true);
+                }
+
+                else if (currentText[currentTextIndex - 1].equals("I'm ready")) {
+                    gm.ui.countdownValue += 300;
+                    gm.sChanger.showScene6();
+                    gm.ui.inventoryPanel.setVisible(true);
+                    gm.player.itemselected = 0;
+                    gm.player.wrongpass=0;
+                    gm.player.codeinput=0;
+                    gm.player.knowpass=0;
+                    gm.ui.randomCorrectCode();
+                    gm.player.atroom=2;
+                    gm.ui.countdownTimer.start();
                 }
             }
         }
