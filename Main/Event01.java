@@ -1,5 +1,7 @@
 package Main;
 
+import java.awt.Color;
+
 public class Event01 {
     
     GameManager gm;
@@ -27,6 +29,9 @@ public class Event01 {
         if(name == "Carey"){
           gm.ui.portraitLabel.setVisible(true);  
         }
+        if(name == "Mysterious voice"){
+        gm.ui.portraitLabel1.setVisible(true); 
+        }
         
         gm.ui.nextLabel.setVisible(true);
     }
@@ -50,7 +55,8 @@ public class Event01 {
                     "I'm just a lonely kid who \nwants to play a game",
                     "The rules are very simple:",
                     "You have 5 minutes to get from \none room to the next",
-                    "Each room has a numpad \nDO NOT enter the wrong code \nmore than 5 times",
+                    "Each room has a numpad \nYou need to enter 6 digits code",
+                    "DO NOT enter the wrong code \nmore than 5 times",
                     "Got it?"
                 };
                 name = "Mysterious voice";
@@ -64,14 +70,19 @@ public class Event01 {
                 name = "Mysterious voice";
                 break;
             case "openeddoor":
-                if(gm.player.hasRD == 1 && gm.player.hasBD == 1) {
+                if(gm.player.knowcode==0){
                     Text = new String[]{"Let's go"};
-                    name = "Carey";
-                } else {
-                    Text = gm.player.count1 == 0 ?
+                        name = "Carey";
+                } else{
+                    if(gm.player.hasRD == 1 && gm.player.hasBD == 1) {
+                        Text = new String[]{"Let's go"};
+                        name = "Carey";
+                    } else {
+                        Text = gm.player.count1 == 0 ?
                             new String[]{"Take the Daruma with you...","You need them"} :
                             new String[]{"I should go look at the daruma \non the shelf"};
-                    name = gm.player.count1 == 0 ? "Mysterious voice" : "Carey";
+                        name = gm.player.count1 == 0 ? "Mysterious voice" : "Carey";
+                    }
                 }
                 break;
             case "door":
@@ -89,12 +100,13 @@ public class Event01 {
                 Text = new String[]{"They said 'Don't enter the \nwrong code 5 times'"};
                 name = "Carey";
                 gm.ui.inputField.setVisible(true);
+                gm.ui.okbutton.setBounds(555, 300, 80, 80);
+                gm.ui.okbutton.setVisible(true);
                 break;
             case "lockchest":
-                if(gm.player.gm.player.itemselected == 2) {
+                if(gm.player.itemselected == 2) {
                     gm.player.hasSK = 0;
-                    gm.ui.Highlight.setVisible(false);
-                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.itemselected=0;
                     gm.player.updatePlayerStatus();
                     gm.ui.bgPanel[2].getComponent(1).setVisible(false);
                     return;
@@ -134,8 +146,8 @@ public class Event01 {
                 name = "Carey";
                 break;
             case "daruma":
-                if(gm.player.room1pass == 1) {
-                    Text = new String[]{"It looks like the glue has come off"};
+                if(gm.player.room1pass == 1 && gm.player.knowcode==1) {
+                    Text = new String[]{"It looks like the glue has \ncome off"};
                     name = "Carey";
                 } else {
                     Text = new String[]{
@@ -154,8 +166,7 @@ public class Event01 {
                     gm.ui.bgPanel[3].getComponent(0).setVisible(false);
                     gm.ui.bgPanel[3].getComponent(1).setVisible(true);
                     gm.player.hasET=0;
-                    gm.ui.Highlight.setVisible(false);
-                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.itemselected=0;
                     gm.player.updatePlayerStatus();
                     gm.ui.bgPanel[3].getComponent(3).setVisible(true);
                     return;
@@ -177,6 +188,8 @@ public class Event01 {
                     Text = new String[]{"I hope this work"};
                     name = "Carey";
                     gm.ui.inputField1.setVisible(true);
+                    gm.ui.okbutton.setBounds(605, 300, 80, 80);
+                    gm.ui.okbutton.setVisible(true);
                 } else {
                     Text = new String[]{
                         "The computer is locked",
@@ -194,6 +207,7 @@ public class Event01 {
                     "'CODE "+doorcode+"'"
                 };
                 name = "Carey";
+                gm.player.knowcode=1;
                 break;
             case "drawer":
                 if(gm.player.usedrawer==0){
@@ -221,8 +235,7 @@ public class Event01 {
                     gm.ui.bgPanel[4].getComponent(0).setVisible(true);
                     gm.ui.bgPanel[4].getComponent(1).setVisible(true);
                     gm.player.hasWD = 0;
-                    gm.ui.Highlight.setVisible(false);
-                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.itemselected=0;
                     gm.player.updatePlayerStatus();
                     return;
                 } else {
@@ -241,8 +254,7 @@ public class Event01 {
                 if(gm.player.itemselected == 4){
                     gm.ui.bgPanel[4].getComponent(5).setVisible(true);
                     gm.player.hasMP = 0;
-                    gm.ui.Highlight.setVisible(false);
-                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.itemselected=0;
                     gm.player.placepaper = 1;
                     gm.player.updatePlayerStatus();
                     if(gm.player.candlelight == 1){
@@ -259,8 +271,7 @@ public class Event01 {
                 if(gm.player.itemselected == 5){
                     gm.ui.bgPanel[4].getComponent(3).setVisible(true);
                     gm.player.hasWC = 0;
-                    gm.ui.Highlight.setVisible(false);
-                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.itemselected=0;
                     gm.player.updatePlayerStatus();
                     return;
                 } else {
@@ -273,8 +284,7 @@ public class Event01 {
                     gm.ui.bgPanel[4].getComponent(2).setVisible(true);
                     gm.player.candlelight = 1;
                     gm.player.hasGL = 0;
-                    gm.ui.Highlight.setVisible(false);
-                    gm.ui.itemnameLabel.setVisible(false);
+                    gm.player.itemselected=0;
                     gm.player.updatePlayerStatus();
                     if(gm.player.placepaper == 1){
                         gm.ui.bgPanel[4].getComponent(4).setVisible(true);
@@ -308,12 +318,22 @@ public class Event01 {
                     "You can rest first",
                     "Tell me when you're ready"
                 };
-                name = "Mysterious Voice";
+                name = "Mysterious voice";
                 break;
             case "breakroom3":
                 Text = new String[]{"I'm ready"};
                 name = "Carey";
                 gm.ui.bgPanel[5].getComponent(0).setVisible(false);
+                break;
+            case "luckyend1":
+                Text = new String[]{
+                    "You think you're lucky?",
+                    "Then you probably don't \nneed my help",
+                    "I'll let you rest",
+                    "As for all the items, \nif you bring them, \nI'll confiscate them",
+                    "Tell me when you're ready"
+                };
+                name = "Mysterious voice";
                 break;
             default:
                 Text = new String[]{"No text here"};
@@ -358,29 +378,47 @@ public class Event01 {
     //input code check
     public void handleInput(String input) {
         System.out.println("Handling input: " + input);
-        if(input.equalsIgnoreCase(Integer.toString(gm.ui.getCorrectCode()))){
-            System.out.println("PASS");
-            gm.ui.bgPanel[1].getComponent(0).setVisible(true);
-            gm.player.room1pass = 1;
+        if(input.equals("WRONG CODE")||input.equals("ENTER CODE")){
+            //nothing
         }
         else{
-            gm.player.codeinput++;
-            if(gm.player.codeinput==5){
-                gm.ui.countdownTimer.stop();
-                gm.ui.clearScreen();
-                gm.ui.initializeLostScreen();
+            if(input.equalsIgnoreCase(Integer.toString(gm.ui.getCorrectCode()))){
+                System.out.println("PASS");
+                gm.ui.bgPanel[1].getComponent(0).setVisible(true);
+                gm.player.room1pass = 1;
+                handleNext();
+            }
+            else{
+                gm.ui.inputField.setPlaceholder("WRONG CODE");
+                gm.ui.inputField.setForeground(Color.RED);
+                gm.ui.inputField.setText("WRONG CODE");
+                gm.player.codeinput++;
+                if(gm.player.codeinput==5){
+                    gm.ui.countdownTimer.stop();
+                    gm.ui.clearScreen();
+                    gm.ui.initializeLostScreen();
+                }
             }
         }
+        
     }
 
     //input computer password check
     public void handlePass(String input) {
         System.out.println("Handling password: " + input);
-        if(input.equalsIgnoreCase("9563")){
-            System.out.println("PASS");
-            gm.ui.bgPanel[3].getComponent(2).setVisible(true);
+        if(input.equals("WRONG PASSWORD")||input.equals("ENTER PASSWORD")){
+            //nothing
         }
         else{
+            if(input.equalsIgnoreCase("9563")){
+            System.out.println("PASS");
+            gm.ui.bgPanel[3].getComponent(2).setVisible(true);
+            handleNext();
+        }
+        else{
+            gm.ui.inputField1.setPlaceholder("WRONG PASSWORD");
+            gm.ui.inputField1.setForeground(Color.RED);
+            gm.ui.inputField1.setText("WRONG PASSWORD");
             gm.player.wrongpass++;
             if(gm.player.wrongpass==3){
                 gm.ui.countdownTimer.stop();
@@ -388,21 +426,12 @@ public class Event01 {
                 gm.ui.initializeLostScreen();
             }
         }
+        }
+        
     }
 
     //next click
     public void handleNext(){
-
-        if(gm.ui.inputField.isVisible()){
-            String input = gm.ui.inputField.getText();
-            handleInput(input);
-        }
-
-        if(gm.ui.inputField1.isVisible()){
-            String input = gm.ui.inputField1.getText();
-            handlePass(input);
-        }
-
         if (dialogueOpen) {
             currentTextIndex++;
             if (currentTextIndex < currentText.length) {
@@ -412,11 +441,17 @@ public class Event01 {
                 gm.ui.nameText.setVisible(false);
                 gm.ui.dialogueLabel.setVisible(false);
                 gm.ui.portraitLabel.setVisible(false);
+                gm.ui.portraitLabel1.setVisible(false);
                 gm.ui.nextLabel.setVisible(false);
+                gm.ui.inputField.setPlaceholder("ENTER CODE");
+                gm.ui.inputField.setForeground(Color.WHITE);
                 gm.ui.inputField.setText("ENTER CODE");
                 gm.ui.inputField.setVisible(false);
+                gm.ui.inputField1.setPlaceholder("ENTER PASSWORD");
+                gm.ui.inputField1.setForeground(Color.BLACK);
                 gm.ui.inputField1.setText("ENTER PASSWORD");
                 gm.ui.inputField1.setVisible(false);
+                gm.ui.okbutton.setVisible(false);
                 dialogueOpen = false;
 
                 //After text condition
@@ -446,7 +481,7 @@ public class Event01 {
                     gm.player.updatePlayerStatus();
                 }
 
-                else if (currentText[currentTextIndex - 1].equals("It looks like the glue has come off")) {
+                else if (currentText[currentTextIndex - 1].equals("It looks like the glue has \ncome off")) {
                     gm.ui.bgPanel[2].getComponent(4).setVisible(false);
                     gm.player.hasRD=1;
                     gm.player.hasBD=1;
@@ -491,7 +526,19 @@ public class Event01 {
                     gm.ui.inventoryPanel.setVisible(false);
                     gm.ui.itemnameLabel.setVisible(false);
                     gm.ui.Highlight.setVisible((false));
-                    lookItem("breakroom1");
+                    if(gm.player.knowcode==0){
+                        gm.player.hasWD = 0;
+                        gm.player.hasSK = 0;
+                        gm.player.hasET = 0;
+                        gm.player.hasMP = 0;
+                        gm.player.hasWC = 0;
+                        gm.player.hasGL = 0;
+                        gm.player.updatePlayerStatus();
+                        lookItem("luckyend1");
+                    }else{
+                        lookItem("breakroom1");
+                    }
+                    
                 }
 
                 else if (currentText[currentTextIndex - 1].equals("It's dark")) {

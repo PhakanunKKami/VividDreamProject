@@ -27,6 +27,7 @@ public class Player {
     public int candlelight; // candle light or not
 
     public int knowpass; // know password or not
+    public int knowcode; // know code or not (for lucky player)
 
     public int wrongpass; // count wrong pass
     public int codeinput; // count code input
@@ -74,9 +75,10 @@ public class Player {
         candlelight = 0;
 
         knowpass = 0;
+        knowcode = 0;
 
         wrongpass = 0;
-        codeinput =0;
+        codeinput = 0;
 
         usebox = 0;
         usedrawer = 0;
@@ -118,6 +120,11 @@ public class Player {
     }
 
     public void updatePlayerStatus(){
+
+        if(itemselected==0){
+            gm.ui.Highlight.setVisible(false);
+            gm.ui.itemnameLabel.setVisible(false);
+        }
 
         if(hasWD==0 && hasSK==0 && hasET==0 && hasMP==0 && hasWC==0 && hasGL ==0){
             gm.ui.Highlight.setVisible(false);

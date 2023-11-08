@@ -16,12 +16,14 @@ public class UI {
     JLabel itemnameLabel;
     public JTextArea messageText;
     public JTextArea nameText;
+    public JButton okbutton;
     public PlaceholderTextField inputField;
     public PlaceholderTextField inputField1;
     public PlaceholderTextField inputField2;
     public JLabel dialogueLabel;
     public JLabel nextLabel;
     public JLabel portraitLabel;
+    public JLabel portraitLabel1;
     public JLabel itembarLabel;
     public JPanel bgPanel[] = new JPanel[15];
     public JLabel bgLabel[] = new JLabel[15];
@@ -58,7 +60,6 @@ public class UI {
       );
 
       random = new Random();
-      randomCorrectCode();
       
       try {
         InputStream is = getClass().getResourceAsStream("Resources/Fonts/x12y16pxMaruMonica.ttf");
@@ -78,6 +79,7 @@ public class UI {
     }
 
     public void initializeTitleScreen() {
+
       // Create title screen panel
       JPanel titlePanel = new JPanel();
       titlePanel.setBounds(100, 0, 680, 680);
@@ -93,6 +95,9 @@ public class UI {
 
       ImageIcon playIcon = new ImageIcon(getClass().getResource("Resources/Gui/PlayButton.png"));
       ImageIcon exitIcon = new ImageIcon(getClass().getResource("Resources/Gui/ExitButton.png"));
+
+      ImageIcon playIconClick = new ImageIcon(getClass().getResource("Resources/Gui/PlayButtonClick.png"));
+      ImageIcon exitIconClick = new ImageIcon(getClass().getResource("Resources/Gui/ExitButtonClick.png"));
 
       // Create buttons
       playButton = new JButton();
@@ -115,9 +120,34 @@ public class UI {
       playButton.setContentAreaFilled(false);
       exitButton.setContentAreaFilled(false);
 
+      // Add mouse hover
+
+      playButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            playButton.setIcon(playIconClick);
+            gm.playSE(gm.buttonse);
+        }
+    
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            playButton.setIcon(playIcon);
+        }
+    });
+
+    exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            exitButton.setIcon(exitIconClick);
+            gm.playSE(gm.buttonse);
+        }
+    
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            exitButton.setIcon(exitIcon);
+        }
+    });
+
       // Add action listeners
       playButton.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
+              randomCorrectCode();
               titlePanel.setVisible(false);
               createPlayerField();
               createMainField();
@@ -166,12 +196,24 @@ public class UI {
     JButton backButton = new JButton();
     backButton.setBounds(228, 420, 224, 96);
     ImageIcon backIcon = new ImageIcon(getClass().getResource("Resources/Gui/BackButton.png"));
+    ImageIcon backIconClick = new ImageIcon(getClass().getResource("Resources/Gui/BackButtonClick.png"));
     backButton.setIcon(backIcon);
 
     backButton.setBackground(null);
     backButton.setFocusPainted(false);
     backButton.setBorderPainted(false);
     backButton.setContentAreaFilled(false);
+
+    backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            backButton.setIcon(backIconClick);
+            gm.playSE(gm.buttonse);
+        }
+    
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            backButton.setIcon(backIcon);
+        }
+    });
 
     backButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -195,18 +237,30 @@ public void initializeWinScreen() {
 
     JLabel winLabel = new JLabel();
     winLabel.setBounds(0, 0, 680, 680);
-    ImageIcon winbg = new ImageIcon(getClass().getResource("Resources/Gui/LostBG.gif"));
+    ImageIcon winbg = new ImageIcon(getClass().getResource("Resources/Gui/WinBG.gif"));
     winLabel.setIcon(winbg);
 
     JButton backButton = new JButton();
     backButton.setBounds(228, 420, 224, 96);
     ImageIcon backIcon = new ImageIcon(getClass().getResource("Resources/Gui/BackButton.png"));
+    ImageIcon backIconClick = new ImageIcon(getClass().getResource("Resources/Gui/BackButtonClick.png"));
     backButton.setIcon(backIcon);
 
     backButton.setBackground(null);
     backButton.setFocusPainted(false);
     backButton.setBorderPainted(false);
     backButton.setContentAreaFilled(false);
+
+    backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            backButton.setIcon(backIconClick);
+            gm.playSE(gm.buttonse);
+        }
+    
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            backButton.setIcon(backIcon);
+        }
+    });
 
     backButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -216,6 +270,17 @@ public void initializeWinScreen() {
         }
     });
 
+    int time = 600-countdownValue;
+    int min = time/60;
+    int sec = time%60;
+    String wintime = "Time used: " + min + " minutes " + sec + " seconds";
+
+    JLabel winTimeLabel = new JLabel(wintime);
+    winTimeLabel.setBounds(120, 160, 500, 50);
+    winTimeLabel.setForeground(Color.decode("#eecca8"));
+    winTimeLabel.setFont(Pixel.deriveFont(Font.BOLD, 35));
+
+    winPanel.add(winTimeLabel);
     winPanel.add(backButton);
     winPanel.add(winLabel);
 
@@ -226,6 +291,7 @@ public void initializeWinScreen() {
 
     public void randomCorrectCode(){
       correctCode = random.nextInt(900000)+100000;
+      System.out.println(correctCode);
     }
 
     public int getCorrectCode(){
@@ -271,6 +337,12 @@ public void initializeWinScreen() {
 
         portraitLabel.setBounds(100, 0, 680, 680);
 
+        ImageIcon portraitIcon1 = new ImageIcon(getClass().getResource("Resources/Gui/Myst.png"));
+
+        portraitLabel1 = new JLabel(portraitIcon1);
+
+        portraitLabel1.setBounds(100, 0, 680, 680);
+
         itemnameLabel = new JLabel("Made By Phakanun AKA KKami");
         itemnameLabel.setBounds(380, 120, 120, 30);
         itemnameLabel.setForeground(Color.decode("#bf8e5a"));
@@ -297,7 +369,7 @@ public void initializeWinScreen() {
 
         //for codepad 1 & 2
         inputField = new PlaceholderTextField("ENTER CODE");
-        inputField.setBounds(290, 300, 300, 80);
+        inputField.setBounds(245, 300, 300, 80);
         inputField.setForeground(Color.WHITE);
         inputField.setBackground(Color.BLACK);
         inputField.setFont(Pixel.deriveFont(Font.BOLD,60));
@@ -305,7 +377,7 @@ public void initializeWinScreen() {
 
         //for computer
         inputField1 = new PlaceholderTextField("ENTER PASSWORD");
-        inputField1.setBounds(240, 300, 400, 80);
+        inputField1.setBounds(195, 300, 400, 80);
         inputField1.setForeground(Color.BLACK);
         inputField1.setBackground(Color.WHITE);
         inputField1.setFont(Pixel.deriveFont(Font.BOLD,60));
@@ -313,19 +385,65 @@ public void initializeWinScreen() {
 
         //for safe
         inputField2 = new PlaceholderTextField("ENTER PASSWORD");
-        inputField2.setBounds(240, 300, 400, 80);
+        inputField2.setBounds(195, 300, 400, 80);
         inputField2.setForeground(Color.WHITE);
         inputField2.setBackground(Color.BLACK);
         inputField2.setFont(Pixel.deriveFont(Font.BOLD,60));
-        inputField2.setHorizontalAlignment(JTextField.CENTER); 
+        inputField2.setHorizontalAlignment(JTextField.CENTER);
+
+        ImageIcon okButtonIcon = new ImageIcon(getClass().getResource("Resources/Gui/OKButton.png"));
+        ImageIcon okButtonIconClick = new ImageIcon(getClass().getResource("Resources/Gui/OKButtonClick.png"));
+        okbutton = new JButton(okButtonIcon);
+        okbutton.setBackground(null);
+        okbutton.setFocusPainted(false);
+        okbutton.setBorderPainted(false);
+        okbutton.setContentAreaFilled(false);
+
+        okbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            okbutton.setIcon(okButtonIconClick);
+        }
+    
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            okbutton.setIcon(okButtonIcon);
+        }
+      });
+
+        okbutton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              if(inputField.isVisible()&&gm.player.atroom==1){
+                String input = gm.ui.inputField.getText();
+                gm.ev1.handleInput(input);
+              }
+    
+              else if(inputField1.isVisible()){
+                String input = gm.ui.inputField1.getText();
+                gm.ev1.handlePass(input);
+              }
+              
+              else if(gm.ui.inputField.isVisible()&&gm.player.atroom==2){
+                String input = gm.ui.inputField.getText();
+                gm.ev2.handleInput(input);
+              }
+
+              else if(gm.ui.inputField2.isVisible()){
+                String input = gm.ui.inputField2.getText();
+                gm.ev2.handlePass(input);
+              }
+            }
+        });
+
+        
 
         messageText.setOpaque(false);
         nameText.setOpaque(false);
 
         window.add(portraitLabel);
+        window.add(portraitLabel1);
         window.add(inputField);
         window.add(inputField1);
         window.add(inputField2);
+        window.add(okbutton);
         window.add(nextLabel);
         window.add(messageText);
         window.add(nameText);
@@ -338,9 +456,11 @@ public void initializeWinScreen() {
         dialogueLabel.setVisible(false);
         nextLabel.setVisible(false);
         portraitLabel.setVisible(false);
+        portraitLabel1.setVisible(false);
         inputField.setVisible(false);
         inputField1.setVisible(false);
-        inputField2.setVisible(false); 
+        inputField2.setVisible(false);
+        okbutton.setVisible(false);
     }
 
     public void createBackground(int bgNum, String bgfilename){
@@ -395,7 +515,7 @@ public void initializeWinScreen() {
 
     }
 
-    public void createButton(int bgNum, int x, int y, int width, int height, String filename, String command){
+    public void createButton(int bgNum, int x, int y, int width, int height, String filename, String command, String filename1){
       ImageIcon buttonIcon = new ImageIcon(getClass().getResource(filename));
 
       JButton Button = new JButton();
@@ -406,7 +526,21 @@ public void initializeWinScreen() {
       Button.setIcon(buttonIcon);
       Button.addActionListener(gm.aHandler);
       Button.setActionCommand(command);
-      Button.setBorderPainted(false);
+      
+      Button.setBorderPainted(false);if(filename1 != null){
+        ImageIcon buttonIconClick = new ImageIcon(getClass().getResource(filename1));
+        Button.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            Button.setIcon(buttonIconClick);
+        }
+    
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            Button.setIcon(buttonIcon);
+        }
+    });
+      }
+
+      
 
       bgPanel[bgNum].add(Button);
     }
@@ -440,7 +574,7 @@ public void initializeWinScreen() {
     public void createPlayerField(){
 
       //inventory
-      ImageIcon inventoryIcon = new ImageIcon(getClass().getResource("Resources/Gui/Itembar.png"));
+      ImageIcon inventoryIcon = new ImageIcon(getClass().getResource("Resources/Gui/ItemBar.png"));
       inventoryLabel = new JLabel(inventoryIcon);
       inventoryLabel.setBounds(0,0,680,112);
       
@@ -548,8 +682,8 @@ public void initializeWinScreen() {
       createObject(1,556, 340, 52, 76,"Resources/Room1/NumPad1.png","LookNumPad1");
       createObject(1,168, 254, 175, 340,"Resources/Room1/Lamp1.png","LookLamp");
       //arrow
-      createButton(1, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-4");
-      createButton(1, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-2");
+      createButton(1, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-4",null);
+      createButton(1, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-2",null);
       bgPanel[1].add(bgLabel[1]);
 
       //Room1-2
@@ -564,8 +698,8 @@ public void initializeWinScreen() {
       createObject(2, 472, 380, 84, 36, "Resources/Room1/Darumas.png", "LookDaruma");
       createObject(2, 584, 320, 32, 40, "Resources/Room1/SnowGlobe.png", "LookSnowGlobe");
       //arrow
-      createButton(2, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-1");
-      createButton(2, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-3");
+      createButton(2, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-1",null);
+      createButton(2, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-3",null);
       bgPanel[2].add(bgLabel[2]);
 
       //Room1-3
@@ -581,8 +715,8 @@ public void initializeWinScreen() {
 
       createObject(3,324,436,228,40,"Resources/Room1/Drawer.png","Drawer");
       //arrow
-      createButton(3, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-2");
-      createButton(3, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-4");
+      createButton(3, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-2",null);
+      createButton(3, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-4",null);
       bgPanel[3].add(bgLabel[3]);
 
       //Room1-4
@@ -601,14 +735,14 @@ public void initializeWinScreen() {
       createObject(4,172,180,84,120,"Resources/Room1/NoPaperHere.png","LookNoPaper");
       createObject(4,188,392,72,28,"Resources/Room1/CandleHolder.png","LookHolder");
       //arrow
-      createButton(4, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-3");
-      createButton(4, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-1");
+      createButton(4, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom1-3",null);
+      createButton(4, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom1-1",null);
       bgPanel[4].add(bgLabel[4]);
 
       //Break
       createBackground(5, "Resources/Room2/BlackBG.png");
       //ready button
-      createButton(5, 292, 300, 312, 60, "Resources/Gui/ReadyButton.png", "Ready");
+      createButton(5, 292, 300, 312, 60, "Resources/Gui/ReadyButton.png", "Ready","Resources/Gui/ReadyButtonClick.png");
       bgPanel[5].add(bgLabel[5]);
 
       //Room2-1
@@ -621,8 +755,8 @@ public void initializeWinScreen() {
       createObject(6,340, 196, 200, 400,"Resources/Room1/Door1.png","LookDoor2");
       createObject(6,556, 340, 52, 76,"Resources/Room1/NumPad1.png","LookNumPad2");
       //arrow
-      createButton(6, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-4");
-      createButton(6, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-2");
+      createButton(6, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-4",null);
+      createButton(6, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-2",null);
       bgPanel[6].add(bgLabel[6]);
 
       //Room2-2
@@ -637,8 +771,8 @@ public void initializeWinScreen() {
       createObject(7,520,504,136,88,"Resources/Room2/BlueBox.png","LookBBox");
       createObject(7, 320, 200, 180, 128, "Resources/Room2/Symbol.png", "Symbol");
       //arrow
-      createButton(7, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-1");
-      createButton(7, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-3");
+      createButton(7, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-1",null);
+      createButton(7, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-3",null);
       bgPanel[7].add(bgLabel[7]);
       
       //Room2-3
@@ -649,8 +783,8 @@ public void initializeWinScreen() {
       createObject(8, 384, 340, 116, 80, "Resources/Room2/NoteBook.png", "Notebook");
       //arrow
       
-      createButton(8, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-2");
-      createButton(8, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-4");
+      createButton(8, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-2",null);
+      createButton(8, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-4",null);
       bgPanel[8].add(bgLabel[8]);
       
       //Room2-4
@@ -665,24 +799,26 @@ public void initializeWinScreen() {
       createObject(9, 622,488, 64, 104, "Resources/Room2/Speaker.png", "Speaker");
       createObject(9, 408,488, 64, 104, "Resources/Room2/Speaker.png", "Speaker");
       //arrow
-      createButton(9, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-3");
-      createButton(9, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-1");
+      createButton(9, 136, 360, 24, 36, "Resources/Gui/LeftArrow.png", "goRoom2-3",null);
+      createButton(9, 720, 360, 24, 36, "Resources/Gui/RightArrow.png", "goRoom2-1",null);
       bgPanel[9].add(bgLabel[9]);
 
       //Room2-3-extra
       createBackground(10, "Resources/Room2/Room2-3.png");
 
       //extra arrow for close hint
-      createButton(10, 422, 620, 36, 24, "Resources/Gui/DownArrow.png", "closeHint");
+      createButton(10, 422, 620, 36, 24, "Resources/Gui/DownArrow.png", "closeHint",null);
 
       createObject(10, 248, 160, 380, 472, "Resources/Room2/Hint.png", "Hint");
       bgPanel[10].add(bgLabel[10]);
 
       //start game story
-      createBackground(11, "Resources/Room2/BlackBG.png");
+      createBackground(11, "Resources/Gui/StartBG.png");
+      bgPanel[11].add(bgLabel[11]);
 
       //finish game
-      createBackground(12, "Resources/Room2/BlackBG.png");
+      createBackground(12, "Resources/Gui/EndBG.png");
+      bgPanel[12].add(bgLabel[12]);
  
     }
 

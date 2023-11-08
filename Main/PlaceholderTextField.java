@@ -1,11 +1,12 @@
 package Main;
+import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.JTextField;
 
 public class PlaceholderTextField extends JTextField implements FocusListener {
 
-    private final String placeholder;
+    private String placeholder;
 
     public PlaceholderTextField(String placeholder) {
         this.placeholder = placeholder;
@@ -13,10 +14,22 @@ public class PlaceholderTextField extends JTextField implements FocusListener {
         this.addFocusListener(this);
     }
 
+    public void setPlaceholder(String newPlaceholder) {
+        this.placeholder = newPlaceholder;
+        this.setText(newPlaceholder);
+    }
+
     @Override
     public void focusGained(FocusEvent e) {
         if (this.getText().equals(placeholder)) {
             this.setText("");
+            if(this.getBackground().equals(Color.WHITE)){
+                this.setForeground(Color.BLACK);
+            }
+            else{
+                this.setForeground(Color.WHITE);
+            }
+            
         }
     }
 
