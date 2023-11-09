@@ -7,9 +7,7 @@ public class ActionHandler implements ActionListener{
     GameManager gm;
 
     public ActionHandler(GameManager gm){
-
         this.gm=gm;
-
     }
 
     @Override
