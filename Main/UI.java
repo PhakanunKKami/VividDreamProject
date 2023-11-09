@@ -401,6 +401,7 @@ public void initializeWinScreen() {
 
         okbutton.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseEntered(java.awt.event.MouseEvent evt) {
+          gm.playSE(gm.buttonse);
             okbutton.setIcon(okButtonIconClick);
         }
     
@@ -531,11 +532,12 @@ public void initializeWinScreen() {
         ImageIcon buttonIconClick = new ImageIcon(getClass().getResource(filename1));
         Button.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseEntered(java.awt.event.MouseEvent evt) {
-            Button.setIcon(buttonIconClick);
+          gm.playSE(gm.buttonse);
+          Button.setIcon(buttonIconClick);
         }
     
         public void mouseExited(java.awt.event.MouseEvent evt) {
-            Button.setIcon(buttonIcon);
+          Button.setIcon(buttonIcon);
         }
     });
       }
